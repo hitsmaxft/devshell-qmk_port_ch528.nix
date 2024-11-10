@@ -9,7 +9,13 @@
       [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forEachSupportedSystem = f:
       nixpkgs.lib.genAttrs supportedSystems
-      (system: f { pkgs = import nixpkgs { inherit system; }; });
+      (system: f { pkgs = import nixpkgs { inherit system; 
+      config.allowUnfree = true;
+      config.segger-jlink.acceptLicense = true;
+      config.permittedInsecurePackages = [
+        "segger-jlink-qt4-794l"
+      ];
+    }; });
 
   in {
     devShells = forEachSupportedSystem (
