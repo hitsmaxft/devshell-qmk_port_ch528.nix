@@ -1,8 +1,10 @@
+
 { pkgs ? import <nixpkgs> { }, isMac ? false }:
 let
 
+  riscv = pkgs.callPackage ./toolchain.nix {};
   ENV_TC_PREFIX = "riscv-none-elf";
-  ENV_TC_PATH = (if isMac then "${pkgs.riscv64-embedded}/" else "");
+  ENV_TC_PATH = (if isMac then "${riscv}/" else "${"$"}ENV_TC_PATH");
 
   python311Custom = (pkgs.python311.withPackages (python-pkgs:
     with python-pkgs; [
