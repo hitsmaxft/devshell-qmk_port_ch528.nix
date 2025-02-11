@@ -28,16 +28,16 @@ in stdenvNoCC.mkDerivation rec {
   };
 
     runtimeDependencies = [
-    segger-jlink
+      #pkgs.segger-jlink
   ];
 
   nativeBuildInputs = [
-    autoPatchelfHook
+    pkgs.autoPatchelfHook
   ];
 
   buildInputs = [
-    udev
-    libusb1
+    pkgs.udev
+    pkgs.libusb1
   ];
 
   dontConfigure = true;

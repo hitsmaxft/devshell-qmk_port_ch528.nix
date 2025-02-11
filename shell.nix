@@ -1,10 +1,6 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs ? import <nixpkgs> { }, isMac? false }:
 let
-
-  toolchain = pkgs.callPackage ./toolchain.nix { };
-
-  ENV_TC_PATH = "${toolchain}/bin";
-  ENV_TC_PREFIX = "riscv-none-embed";
+  ENV_TC_PREFIX = "riscv-none-elf";
 
   python311Custom = (pkgs.python311.withPackages (python-pkgs:
   with python-pkgs; [
@@ -16,10 +12,13 @@ let
     pyyaml
   ]));
   cmakeWrapper = pkgs.writeShellApplication {
-    name = "cmake-nix";
+    name = "cmake";
     runtimeInputs = [ pkgs.cmake python311Custom ];
+    # export ENV_TC_PATH for gcc in your .envrc
+      #${pkgs.cmake}/bin/cmake -DADDITIONAL_TOOLCHAIN_PATH="${"$"}{ENV_TC_PATH}" -DTOOLCHAIN_PREFIX=${ENV_TC_PREFIX}  "${
     text = ''
-    cmake -DADDITIONAL_TOOLCHAIN_PATH=${ENV_TC_PATH} -DTOOLCHAIN_PREFIX=${ENV_TC_PREFIX}  "${
+      echo  running command : ${pkgs.cmake}/bin/cmake -DADDITIONAL_TOOLCHAIN_PATH="${"$"}{ENV_TC_PATH}" -DTOOLCHAIN_PREFIX=${ENV_TC_PREFIX}  "${ "$" }{@}"
+    ${pkgs.cmake}/bin/cmake -DADDITIONAL_TOOLCHAIN_PATH="${"$"}{ENV_TC_PATH}" -DTOOLCHAIN_PREFIX=${ENV_TC_PREFIX}  "${
       "$"
     }{@}"
     '';
@@ -28,11 +27,9 @@ let
 in
   pkgs.mkShell {
     packages = with pkgs; [
-      cmake
       ccache
-      python311Custom
       cmakeWrapper
-      nrf-command-line-tools
+      python311Custom
     ];
     nativeBuildInputs = with pkgs.buildPackages; [
       #FIXME use mbedtls in submodule
