@@ -6,7 +6,7 @@ let
   supported = {
     x86_64-linux = {
       arch = "linux-x64";
-      hash = "sha256-00000000000000000000000000000000000000000000";
+      hash = "sha256-1yvc0e7kHcWiCKigOXa3DQFFEN61iQyehzjoBLoj+YU=";
     };
     aarch64-linux = {
       arch = "linux-arm64";
@@ -54,7 +54,7 @@ in stdenvNoCC.mkDerivation rec {
   dontBuild = true;
 
   meta = with lib; {
-    homepage = "https://lxgw.github.io/";
+    homepage = "";
     description =
       "An open-source Chinese font derived from Fontworks' Klee One";
     license = licenses.ofl;
