@@ -18,24 +18,23 @@ let
     };
     aarch64-darwin = {
       arch = "darwin-x64";
-      hash = "sha256-Z8Ly2btTCUhhBADitDru+KHUkT+uJ1se3wSWgBn7Gbk="; 
+      hash = "sha256-YmN7ZbpfV7iO4y6/MpFky9my+h1FMZFZUPcHSZp++io=";
     };
   };
 
   platform = supported.${stdenvNoCC.system} or (throw
     "unsupported platform ${stdenvNoCC.system}");
 
-  version = "11.3.0-1";
-  gccName = "riscv-none-elf-gcc";
+  version = "10.2.0-1.2";
   inherit (platform) arch;
 
 in stdenvNoCC.mkDerivation rec {
-  pname = gccName + "-xpack";
+  pname = "riscv-none-embed-gcc-xpack";
   inherit version;
 
   src = pkgs.fetchurl {
     url =
-      "https://github.com/xpack-dev-tools/${gccName}-xpack/releases/download/v${version}/xpack-${gccName}-${version}-${arch}.tar.gz";
+      "https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/download/v${version}/xpack-riscv-none-embed-gcc-${version}-${arch}.tar.gz";
     inherit (platform) hash;
   };
 
